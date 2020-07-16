@@ -64,8 +64,8 @@ public class PlayerInfo implements Listener {
 	private int pickaxeLevel=-1;
 	private int axeLevel=-1;
 	private boolean hasShears=false;
-	private CampInfo camp;
-	public PlayerInfo(Player player,CampInfo camp) {
+	private Team camp;
+	public PlayerInfo(Player player, Team camp) {
 		this.player=player;
 		this.camp=camp;
 		setArmor();

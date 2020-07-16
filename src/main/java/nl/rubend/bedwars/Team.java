@@ -1,6 +1,5 @@
 package nl.rubend.bedwars;
 
-import nl.rubend.bedwars.listeners.MainGameListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CampInfo implements Listener {
+public class Team implements Listener {
 	private Location spawn;
 	private Location bed;
 	private Villager villager;
@@ -39,7 +38,7 @@ public class CampInfo implements Listener {
 	private int haste=0;
 	private Color color;
 	private String name;
-	private MainGameListener game;
+	private Game game;
 	private static ItemStack sharpnessBook=new ItemStack(Material.ENCHANTED_BOOK,1);
 	private static ItemStack haste1Pick=new ItemStack(Material.GOLDEN_PICKAXE,1);
 	private static ItemStack haste2Pick=new ItemStack(Material.GOLDEN_PICKAXE,1);
@@ -57,7 +56,7 @@ public class CampInfo implements Listener {
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
 	}
-	public CampInfo(MainGameListener game, String name,Color color, Location spawn, Location bed, Location itemSpawn, Location villagerSpawn) {
+	public Team(Game game, String name, Color color, Location spawn, Location bed, Location itemSpawn, Location villagerSpawn) {
 		this.game=game;
 		this.spawn=spawn;
 		this.bed=bed;

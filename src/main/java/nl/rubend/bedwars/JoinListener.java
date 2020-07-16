@@ -1,6 +1,7 @@
-package nl.rubend.bedwars.listeners;
+package nl.rubend.bedwars;
 
 import nl.rubend.bedwars.BedWars;
+import nl.rubend.bedwars.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -16,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 
 public class JoinListener implements Listener {
 	private World world;
-	private MainGameListener mainGameListener;
+	private Game game;
 	public JoinListener(World world) {
 		this.world=world;
 	}
@@ -39,16 +40,16 @@ public class JoinListener implements Listener {
 		for (PotionEffect effect:player.getActivePotionEffects()) player.removePotionEffect(effect.getType());
 		if(world.getPlayers().size()==1) {
 			for (Entity entity : world.getEntitiesByClass(Villager.class)) entity.remove();
-			mainGameListener=new MainGameListener(world);
-			Bukkit.getPluginManager().registerEvents(mainGameListener, BedWars.getPlugin());
+			game =new Game(world);
+			Bukkit.getPluginManager().registerEvents(game, BedWars.getPlugin());
 		}
-		mainGameListener.addPlayer(player);
+		game.addPlayer(player);
 	}
 	private void onLeave(Player player) {
-		mainGameListener.removePlayer(player);
+		game.removePlayer(player);
 		if(world.getPlayers().size()>1) return;
-		mainGameListener.stopGame();
-		HandlerList.unregisterAll(mainGameListener);
-		mainGameListener=null;
+		game.stopGame();
+		HandlerList.unregisterAll(game);
+		game =null;
 	}
 }

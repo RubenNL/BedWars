@@ -1,6 +1,5 @@
 package nl.rubend.bedwars;
 
-import nl.rubend.bedwars.listeners.JoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
