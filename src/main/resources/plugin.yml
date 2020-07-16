@@ -1,0 +1,4 @@
+name: BedWars
+version: ${project.version}
+main: nl.rubend.bedwars.BedWars
+api-version: 1.15
