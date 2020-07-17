@@ -1,7 +1,5 @@
 package nl.rubend.bedwars;
 
-import nl.rubend.bedwars.BedWars;
-import nl.rubend.bedwars.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;

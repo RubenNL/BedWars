@@ -64,16 +64,16 @@ public class PlayerInfo implements Listener {
 	private int pickaxeLevel=-1;
 	private int axeLevel=-1;
 	private boolean hasShears=false;
-	private Team camp;
-	public PlayerInfo(Player player, Team camp) {
+	private Team team;
+	public PlayerInfo(Player player, Team team) {
 		this.player=player;
-		this.camp=camp;
+		this.team = team;
 		setArmor();
 		Bukkit.getPluginManager().registerEvents(this, BedWars.getPlugin());
 	}
 	private void setColor(ItemStack item) {
 		LeatherArmorMeta meta=((LeatherArmorMeta) item.getItemMeta());
-		meta.setColor(camp.getColor());
+		meta.setColor(team.getColor());
 		item.setItemMeta(meta);
 	}
 	private void setArmor() {
@@ -128,12 +128,12 @@ public class PlayerInfo implements Listener {
 				if (item != null && item.getType() == Material.BOW) item.setAmount(0);
 			}
 		}
-		if(camp.isSword(event.getCurrentItem())) {
+		if(team.isSword(event.getCurrentItem())) {
 			for(ItemStack item:event.getWhoClicked().getInventory().getContents()) {
-				if(item!=null && camp.isSword(item)) item.setAmount(0);
+				if(item!=null && team.isSword(item)) item.setAmount(0);
 			}
 		}
-		if(camp.isSharpnessAble(event.getCurrentItem()) && camp.isSharpness()) event.getCurrentItem().addUnsafeEnchantment(Enchantment.DAMAGE_ALL,1);
+		if(team.isSharpnessAble(event.getCurrentItem()) && team.isSharpness()) event.getCurrentItem().addUnsafeEnchantment(Enchantment.DAMAGE_ALL,1);
 	}
 	private void setArmorLevel(int armorLevel) {
 		this.armorLevel=armorLevel;
