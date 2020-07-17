@@ -27,6 +27,7 @@ public class ItemSpawner implements Runnable {
 		if(type==4) delay=8L;
 		if(type==5) delay=15*20L;
 		if(type==6) delay=15*20L;
+		for (Entity entity : location.getNearbyEntitiesByType(Item.class, 2)) entity.remove();
 		this.taskId=Bukkit.getScheduler().scheduleSyncRepeatingTask(BedWars.getPlugin(), this, 0L, delay);
 	}
 	private ItemStack getRandomItem(boolean includeEmerald) {
@@ -42,7 +43,6 @@ public class ItemSpawner implements Runnable {
 		if(type<5) itemStack=getRandomItem(type>2);
 		if(type==5) itemStack=new ItemStack(Material.EMERALD,1);
 		if(type==6) itemStack=new ItemStack(Material.DIAMOND,1);
-		for (Entity entity : location.getNearbyEntitiesByType(Item.class, 2)) entity.remove();
 		location.getWorld().dropItem(location,itemStack);
 	}
 	public void stop() {
