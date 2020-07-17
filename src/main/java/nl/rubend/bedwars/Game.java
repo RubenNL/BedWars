@@ -1,7 +1,5 @@
 package nl.rubend.bedwars;
 
-import nl.rubend.bedwars.Team;
-import nl.rubend.bedwars.ItemSpawner;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -26,8 +24,8 @@ public class Game implements Listener {
 	public void removePlayer(Player player) {
 	}
 	public void startGame() {
-		camps.add(new Team(this, "RED",Color.RED,new Location(world,32,65,0),new Location(world,32,65,1),new Location(world,32,65,-3),new Location(world,35.5,65,0.5,90,0)));
-		camps.add(new Team(this,"GREEN",Color.GREEN,new Location(world,-32,65,0),new Location(world,-32,65,1),new Location(world,-32,65,-3),new Location(world,-34.5,65,0.5,-90,0)));
+		camps.add(new Team(this, "RED",Color.RED,new Location(world,32,65,0),new Location(world,32,65,1),new Location(world,32,65,-3),new Location(world,35.5,65,0.5,90,0),new Location(world,35.5,65,-1.5,90,0)));
+		camps.add(new Team(this,"GREEN",Color.GREEN,new Location(world,-32,65,0),new Location(world,-32,65,1),new Location(world,-32,65,-3),new Location(world,-34.5,65,0.5,-90,0),new Location(world,-34.5,65,-1.5,-90,0)));
 		publicSpawners.add(new ItemSpawner(new Location(world,25,65,10),ItemSpawner.DIAMOND));
 		List<Player> players=world.getPlayers();
 		for(Player player:players) camps.get(players.indexOf(player)%(camps.size()+1)).addPlayer(player);
@@ -42,7 +40,7 @@ public class Game implements Listener {
 		if(camps.size()==0) stopGame();
 	}
 	public void stopGame() {
-		broadcast("Team "+camps.get(0).getName()+" WON!");
+		if(camps.size()==1) broadcast("Team "+camps.get(0).getName()+" WON!");
 		for(Team camp:camps) camp.stop();
 		for(ItemSpawner spawner:publicSpawners) spawner.stop();
 	}

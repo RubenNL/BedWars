@@ -124,10 +124,16 @@ public class PlayerInfo implements Listener {
 		int axeIndex=axeLevels.indexOf(event.getCurrentItem());
 		if(axeIndex>0) axeLevel=axeIndex;
 		if(event.getCurrentItem().getType()==Material.BOW) {
-			for(ItemStack item:event.getWhoClicked().getInventory().getContents()) {
-				if(item!=null && item.getType()==Material.BOW) item.setAmount(0);
+			for (ItemStack item : event.getWhoClicked().getInventory().getContents()) {
+				if (item != null && item.getType() == Material.BOW) item.setAmount(0);
 			}
 		}
+		if(camp.isSword(event.getCurrentItem())) {
+			for(ItemStack item:event.getWhoClicked().getInventory().getContents()) {
+				if(item!=null && camp.isSword(item)) item.setAmount(0);
+			}
+		}
+		if(camp.isSharpnessAble(event.getCurrentItem()) && camp.isSharpness()) event.getCurrentItem().addUnsafeEnchantment(Enchantment.DAMAGE_ALL,1);
 	}
 	private void setArmorLevel(int armorLevel) {
 		this.armorLevel=armorLevel;

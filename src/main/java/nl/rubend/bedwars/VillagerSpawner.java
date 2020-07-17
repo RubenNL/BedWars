@@ -65,6 +65,7 @@ public class VillagerSpawner {
 	private Villager villager;
 	public VillagerSpawner(Location location) {
 		this.villager=((Villager) location.getWorld().spawnEntity(location,EntityType.VILLAGER));
+		villager.setCustomName("PERSONAL UPGRADES");
 		villager.setInvulnerable(true);
 		villager.setRecipes(recipes);
 		villager.setAI(false);
