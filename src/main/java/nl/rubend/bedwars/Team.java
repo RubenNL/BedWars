@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -11,6 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -34,6 +39,7 @@ public class Team implements Listener {
 	private Color color;
 	private String name;
 	private Game game;
+	private boolean bedExists=true;
 	public Team(Game game, String name, Color color, Location spawn, Location bed, Location itemSpawn, Location villagerSpawn,Location wanderingTraderSpawn) {
 		this.game=game;
 		this.spawn=spawn;
@@ -55,17 +61,22 @@ public class Team implements Listener {
 	public void removePlayer(Player player) {
 		players.remove(player);
 		if(players.size()==0) {
+			game.broadcast("Team "+getName()+" is fully dead!");
 			stop();
-			game.removeTeam(this);
 		}
 	}
 	public void start() {
 		for(Player player:players) {
+			player.getInventory().clear();
+			player.setHealth(20);
+			player.setFoodLevel(20);
+			player.setSaturation(1);
 			player.getInventory().addItem(sword);
 			player.teleport(spawn);
-			player.setBedSpawnLocation(bed);
+			player.setBedSpawnLocation(bed,true);
 		}
 		Bukkit.getPluginManager().registerEvents(this, BedWars.getPlugin());
+		//if(players.size()==0) stop();
 	}
 	public void stop() {
 		itemSpawner.stop();
@@ -73,6 +84,7 @@ public class Team implements Listener {
 		villager.remove();
 		for(PlayerInfo playerInfo:playerInfoMap.values()) playerInfo.stop();
 		HandlerList.unregisterAll(this);
+		game.removeTeam(this);
 	}
 	public boolean isSword(ItemStack item) {
 		return (item.getType() == Material.WOODEN_SWORD || item.getType() == Material.STONE_SWORD || item.getType() == Material.IRON_SWORD || item.getType() == Material.DIAMOND_SWORD);
@@ -89,10 +101,12 @@ public class Team implements Listener {
 	@EventHandler(priority=EventPriority.HIGH)
 	private void onPlayerRespawn(PlayerRespawnEvent event) {
 		if(!players.contains(event.getPlayer())) return;
-		if(event.isBedSpawn()) {
+		if(bedExists) {
+			event.setRespawnLocation(spawn);
 			event.getPlayer().getInventory().addItem(sword);
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING,Integer.MAX_VALUE,haste-1));
 		} else {
+			bedExists=false;
 			broadcastMessage("Player "+event.getPlayer().getName()+" is out of the game.");
 			removePlayer(event.getPlayer());
 		}
@@ -117,5 +131,18 @@ public class Team implements Listener {
 	public void setHaste(int haste) {
 		this.haste=haste;
 		giveHaste();
+	}
+	public boolean isBedExists() {return bedExists;}
+	@EventHandler
+	private void bedSleep(PlayerBedEnterEvent event) {
+		event.setCancelled(true);
+	}
+	@EventHandler
+	private void onBlockBreak(BlockBreakEvent event) {
+		if(event.getBlock().getType().name().toLowerCase().contains("bed") && event.getBlock().getLocation().distance(bed)<2) {
+			bedExists=false;
+			broadcastMessage("bed is broken!");
+			event.setDropItems(false);
+		}
 	}
 }

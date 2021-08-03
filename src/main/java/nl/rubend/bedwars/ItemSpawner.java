@@ -7,6 +7,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.LinkedHashMap;
+
 public class ItemSpawner implements Runnable {
 	private Location location;
 	private int taskId;
@@ -20,15 +22,15 @@ public class ItemSpawner implements Runnable {
 	public ItemSpawner(Location location,int type) {
 		this.location=location;
 		this.type=type;
-		long delay=1000000L;
-		if(type==1) delay=20L;
-		if(type==2) delay=15L;
-		if(type==3) delay=15L;
-		if(type==4) delay=8L;
-		if(type==5) delay=15*20L;
-		if(type==6) delay=15*20L;
 		for (Entity entity : location.getNearbyEntitiesByType(Item.class, 2)) entity.remove();
-		this.taskId=Bukkit.getScheduler().scheduleSyncRepeatingTask(BedWars.getPlugin(), this, 0L, delay);
+		this.taskId=Bukkit.getScheduler().scheduleSyncRepeatingTask(BedWars.getPlugin(), this, 0L, getDelay(type));
+	}
+	public ItemSpawner(LinkedHashMap map,Game game) {
+		this.location=Location.deserialize((LinkedHashMap) map.get("location"));
+		this.location.setWorld(game.getWorld());
+		this.type=(Integer) map.get("type");
+		for (Entity entity : location.getNearbyEntitiesByType(Item.class, 2)) entity.remove();
+		this.taskId=Bukkit.getScheduler().scheduleSyncRepeatingTask(BedWars.getPlugin(), this, 0L, getDelay(type));
 	}
 	private ItemStack getRandomItem(boolean includeEmerald) {
 		Material material=Material.IRON_INGOT;
@@ -36,6 +38,16 @@ public class ItemSpawner implements Runnable {
 		if(random==1) material=Material.GOLD_INGOT;
 		if(random==2 && includeEmerald) material=Material.EMERALD;
 		return new ItemStack(material,1);
+	}
+	public Long getDelay(int type) {
+		long delay=1000000L;
+		if(type==1) delay=20L;
+		if(type==2) delay=15L;
+		if(type==3) delay=15L;
+		if(type==4) delay=8L;
+		if(type==5) delay=15*20L;
+		if(type==6) delay=15*20L;
+		return delay;
 	}
 	@Override
 	public void run() {

@@ -1,1 +1,74 @@
 world: 'bedwars'
+teams:
+  - name: RED
+    color: RED
+    spawn:
+      x: 28
+      y: 65
+      z: 0
+      yaw: 90
+      pitch: 0
+    bed:
+      x: 33
+      y: 65
+      z: 1
+    villager:
+      x: 33.5
+      y: 65
+      z: 3.5
+      yaw: 90
+      pitch: 0
+    trader:
+      x: 33.5
+      y: 65
+      z: 5.5
+      yaw: 90
+      pitch: 0
+    itemspawn:
+      x: 30.5
+      y: 65
+      z: 6.5
+  - name: GREEN
+    color: GREEN
+    spawn:
+      x: -28
+      y: 65
+      z: 0
+      yaw: 90
+      pitch: 0
+    bed:
+      x: -33
+      y: 65
+      z: 1
+    villager:
+      x: -32.5
+      y: 65
+      z: -0.5
+      yaw: 270
+      pitch: 0
+    trader:
+      x: -32.5
+      y: 65
+      z: -2.5
+      yaw: 270
+      pitch: 0
+    itemspawn:
+      x: -29.5
+      y: 65
+      z: -3.5
+spawners:
+  - type: 5 #emerald
+    location:
+      x: 0
+      y: 65
+      z: 1
+  - type: 6 #diamond
+    location:
+      x: 18
+      y: 65
+      z: 20
+  - type: 6 #diamond
+    location:
+      x: -18
+      y: 65
+      z: 20

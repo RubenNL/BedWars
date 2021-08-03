@@ -37,7 +37,6 @@ public class JoinListener implements Listener {
 		player.getEnderChest().clear();
 		for (PotionEffect effect:player.getActivePotionEffects()) player.removePotionEffect(effect.getType());
 		if(world.getPlayers().size()==1) {
-			for (Entity entity : world.getEntitiesByClass(Villager.class)) entity.remove();
 			game =new Game(world);
 			Bukkit.getPluginManager().registerEvents(game, BedWars.getPlugin());
 		}
@@ -50,4 +49,5 @@ public class JoinListener implements Listener {
 		HandlerList.unregisterAll(game);
 		game =null;
 	}
+	public Game getGame() {return game;}
 }

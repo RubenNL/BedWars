@@ -101,7 +101,7 @@ public class PlayerInfo implements Listener {
 	@EventHandler
 	private void onPlayerRespawn(PlayerRespawnEvent event) {
 		if(event.getPlayer()!=player) return;
-		if(event.isBedSpawn()) {
+		if(team.isBedExists()) {
 			PlayerInventory inv=player.getInventory();
 			setArmor();
 			if(hasShears) inv.addItem(new ItemStack(Material.SHEARS));

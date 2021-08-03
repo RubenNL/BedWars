@@ -2,3 +2,10 @@ name: BedWars
 version: ${project.version}
 main: nl.rubend.bedwars.BedWars
 api-version: 1.17
+commands:
+  startbedwars:
+    description: start bedwars
+    usage: /<command>
+  resetbedwars:
+    description: reset bedwars
+    usage: /<command>
