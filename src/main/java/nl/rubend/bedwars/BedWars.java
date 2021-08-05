@@ -1,6 +1,6 @@
 package nl.rubend.bedwars;
 
-import com.onarandombox.MultiverseCore.utils.FileUtils;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class BedWars extends JavaPlugin {
@@ -21,8 +23,8 @@ public final class BedWars extends JavaPlugin {
         saveDefaultConfig();
         plugin = this;
         worldManager = new WorldManager(worldName);
-        reset();
         Bukkit.getPluginManager().registerEvents(worldManager, this);
+        reset();
 
     }
     @Override
@@ -39,15 +41,26 @@ public final class BedWars extends JavaPlugin {
         return true;
     }
     private void reset() {
+        List<Player> players = new ArrayList<>();
         World world=Bukkit.getWorld(worldName);
-        world.setKeepSpawnInMemory(false);
-        List<Player> players=world.getPlayers();
-        players.forEach(player->player.performCommand("mvtp lobby"));
-        Bukkit.unloadWorld(worldName,false);
+        if(world!=null) {
+            world.setKeepSpawnInMemory(false);
+            players=world.getPlayers();
+            players.forEach(player -> player.performCommand("mvtp lobby"));
+            Bukkit.unloadWorld(worldName, false);
+        }
         final File src = new File(Bukkit.getWorldContainer() + File.separator + worldName);
-        FileUtils.deleteFolder(src);
+        try {
+            FileUtils.deleteDirectory(src);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         File backup = new File(Bukkit.getWorldContainer() + File.separator + worldName+"-backup");
-        FileUtils.copyFolder(backup,src);
+        try {
+            FileUtils.copyDirectory(backup,src);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         getServer().createWorld(new WorldCreator(worldName));
         plugin.getLogger().info("loaded.");
         players.forEach(player->player.performCommand("mvtp bedwars"));
